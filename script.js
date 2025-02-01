@@ -2,7 +2,7 @@ const taskListContainer = document.getElementById("task-list");
 const addTaskButton = document.getElementById("addTaskButton");
 const taskDescriptionInput = document.getElementById("taskDescription");
 
-const API_URL = "${{ secrets.API_URL }}" ;
+const API_URL = process.env.API_URL;
 
 // Function to fetch tasks from the API
 async function fetchTasks() {
