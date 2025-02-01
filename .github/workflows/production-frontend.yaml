@@ -28,8 +28,8 @@ jobs:
 
       - name: Replace API URL in JavaScript file
         run: |
-          echo "const API_URL = '${{ secrets.API_URL }}';" > api_config.js
-  
+          sed -i "s|const API_URL = '';|const API_URL = '${{ secrets.API_URL }}';|" script.js
+
       - name: Upload Files to S3
         run: |
           aws s3 cp index.html s3://${{ vars.S3_BUCKET_NAME }}/ --region ${{ secrets.AWS_REGION }} --cache-control max-age=0
