@@ -1,0 +1,37 @@
+name: Production Frontend Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy to S3 and Invalidate CloudFront
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Upload Files to S3
+        run: |
+          aws s3 cp index.html s3://${{ vars.S3_BUCKET_NAME }}/ --region ${{ secrets.AWS_REGION }} --cache-control max-age=0
+          aws s3 cp script.js s3://${{ vars.S3_BUCKET_NAME }}/ --region ${{ secrets.AWS_REGION }} --cache-control max-age=0
+          aws s3 cp style.css s3://${{ vars.S3_BUCKET_NAME }}/ --region ${{ secrets.AWS_REGION }} --cache-control max-age=0
+
+      - name: Invalidate CloudFront Cache
+        run: |
+          aws cloudfront create-invalidation --distribution-id ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
