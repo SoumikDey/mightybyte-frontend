@@ -30,7 +30,7 @@ jobs:
         run: |
           aws s3 cp index.html s3://${{ vars.S3_BUCKET_NAME }}/ --region ${{ secrets.AWS_REGION }} --cache-control max-age=0
           aws s3 cp script.js s3://${{ vars.S3_BUCKET_NAME }}/ --region ${{ secrets.AWS_REGION }} --cache-control max-age=0
-          aws s3 cp style.css s3://${{ vars.S3_BUCKET_NAME }}/ --region ${{ secrets.AWS_REGION }} --cache-control max-age=0
+          aws s3 cp styles.css s3://${{ vars.S3_BUCKET_NAME }}/ --region ${{ secrets.AWS_REGION }} --cache-control max-age=0
 
       - name: Invalidate CloudFront Cache
         run: |
