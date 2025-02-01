@@ -26,6 +26,9 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
           aws-region: ${{ secrets.AWS_REGION }}
 
+      - name: Set Environment Variable
+        run: echo "API_URL=${{ secrets.API_URL }}" >> $GITHUB_ENV
+
       - name: Upload Files to S3
         run: |
           aws s3 cp index.html s3://${{ vars.S3_BUCKET_NAME }}/ --region ${{ secrets.AWS_REGION }} --cache-control max-age=0
