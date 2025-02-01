@@ -2,7 +2,12 @@ const taskListContainer = document.getElementById("task-list");
 const addTaskButton = document.getElementById("addTaskButton");
 const taskDescriptionInput = document.getElementById("taskDescription");
 
-const API_URL = process.env.API_URL;
+const API_URL = window.API_URL;
+
+fetch(`${API_URL}/endpoint`)
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error("Error:", error));
 
 // Function to fetch tasks from the API
 async function fetchTasks() {
